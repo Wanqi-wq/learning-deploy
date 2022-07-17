@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 function Home() {
   return (
@@ -8,6 +9,7 @@ function Home() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>当前在 Home 页面--production -lint and test</h1>
+        <div>learn react</div>
         <Link to="/about" className="App-link">About</Link>
       </header>
     </div>
@@ -28,6 +30,7 @@ function About() {
 
 function App() {
   return (
+    <BrowserRouter>
     <div className="App">
       <header className="App-header">
         <Routes>
@@ -36,6 +39,7 @@ function App() {
       </Routes>
       </header>
     </div>
+    </BrowserRouter>
   );
 }
 
