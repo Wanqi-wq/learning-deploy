@@ -38,6 +38,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
+
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: node-modules-
         
         # 在 cra 中，使用 npm run build 来模拟 ESLint
       - name: ESLint
@@ -53,5 +58,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: node-modules-
       - name: Test
         run: npm run test
