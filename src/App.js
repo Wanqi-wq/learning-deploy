@@ -8,7 +8,7 @@ function Home() {
     <div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1>当前在 Home 页面--production -lint and test hahhaha6666</h1>
+        <h1>当前在 Home 页面--production -lint and test hahhaha6666-preview</h1>
         <div>learn react</div>
         <Link to="/about" className="App-link">About</Link>
       </header>
