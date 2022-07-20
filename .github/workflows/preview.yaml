@@ -5,7 +5,7 @@ name: Preview
 on:
   push:
     branches:    
-      - feature-*
+      - feature/*
 
 # 执行所有的 jobs
 jobs:
