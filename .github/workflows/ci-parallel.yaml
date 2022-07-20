@@ -1,0 +1,83 @@
+# 关于本次 workflow 的名字
+name: CI
+
+# 执行 CI 的时机: 当 git push 代码到 github 时
+on: [push]
+
+# 执行所有的 jobs
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      # 切出代码，使用该 Action 将可以拉取最新代码
+      - uses: actions/checkout@v2
+
+      # 配置 node.js 环境，此时使用的是 node14
+      # 注意此处 node.js 版本，与 Docker 中版本一致，与 package.json 中 engines.node 版本一致
+      # 如果需要测试不同 node.js 环境下的表现，可使用 matrix
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: node-modules-
+        
+        # 安装依赖,# 如果命中 key，则直接跳过依赖安装
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn
+  lint:
+    runs-on: ubuntu-latest
+    # 通过 needs 字段可设置前置依赖的 Job，比如 install
+    needs: install
+    steps:
+      # 切出代码，使用该 Action 将可以拉取最新代码
+      - uses: actions/checkout@v2
+
+      # 配置 node.js 环境，此时使用的是 node14
+      # 注意此处 node.js 版本，与 Docker 中版本一致，与 package.json 中 engines.node 版本一致
+      # 如果需要测试不同 node.js 环境下的表现，可使用 matrix
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: node-modules-
+        
+        # 在 cra 中，使用 npm run build 来模拟 ESLint
+      - name: ESLint
+        run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+    # 通过 needs 字段可设置前置依赖的 Job，比如 install
+    needs: install
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: node-modules-
+
+      - name: Test
+        run: npm run test
