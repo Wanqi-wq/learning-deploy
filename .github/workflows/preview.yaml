@@ -16,7 +16,7 @@ jobs:
       # 获取 CICD 中的变量: Context
       # https://docs.github.com/en/actions/learn-github-actions/expressions
       name: preview
-      url: http://119.91.229.204:6000
+      url: http://119.91.229.204:4000
     steps:
       # 切出代码，使用该 Action 将可以拉取最新代码
       - uses: actions/checkout@v2
